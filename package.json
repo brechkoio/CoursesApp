@@ -1,0 +1,11 @@
+{
+  "name": "coursesapp",
+  "version": "1.0.0",
+  "description": "nodejs express mongoose mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yurri Brechko",
+  "license": "ISC"
+}
