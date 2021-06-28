@@ -1,1 +1,24 @@
 <h1>Courses</h1>
+
+{{#if courses.length}}
+<div class="row">
+    {{#each courses}}
+    <div class="col s12 m4">
+        <div class="card">
+            <div class="card-image">
+                <img src="{{img}}" alt="{{img}}">
+            </div>
+            <div class="card-content">
+                <span class="card-title">{{title}}</span>
+                <p class="price">{{price}}</p>
+            </div>
+            <div class="card-action">
+                <a href="/courses/{{id}}">Open course</a>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>
+{{else}}
+<h3>Courses list empty</h3>
+{{/if}}
