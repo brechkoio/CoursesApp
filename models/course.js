@@ -7,7 +7,7 @@ class Course {
         this.title = title;
         this.price = price;
         this.img = img;
-        uuidv4();
+        this.id = uuidv4();
     }
 
     toJSON() {
@@ -52,6 +52,11 @@ class Course {
                 }
             );
         });
+    }
+
+    static async getById(id) {
+        const courses = await Course.getAll();
+        return courses.find(c => c.id === id);
     }
 }
 
