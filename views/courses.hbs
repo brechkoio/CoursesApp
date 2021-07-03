@@ -15,6 +15,10 @@
             <div class="card-action">
                 <a href="/courses/{{id}}" target="_blank">Open course</a>
                 <a href="/courses/{{id}}/edit?allow=true">Edit course</a>
+                <form action="/card/add" method="POST">
+                <input type="hidden" name="id" value="{{id}}">
+                    <button class="btn btn-primaty">Add to Card</button>
+                </form>
             </div>
         </div>
     </div>
