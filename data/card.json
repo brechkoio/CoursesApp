@@ -1,1 +1,1 @@
-{"courses":[{"title":"Vue JS","price":"15000","img":"https://www.dotcom-monitor.com/blog/wp-content/uploads/sites/3/2020/05/Vue-logo-1.png","id":"5eafcf61-74ca-40f9-8e4d-452171848b63","count":1}],"price":15000}
+{"courses":[{"_id":"60e68ac6e9fe9a0f64a06a72","title":"Test JS","price":100000,"img":"https://test.io/wp-content/uploads/2019/02/testIO-logo-rgb-2.png","__v":0},{"_id":"60e402ec74116507a4cfeb07","title":"React JS","price":7000,"img":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png","__v":0}],"price":107000}
