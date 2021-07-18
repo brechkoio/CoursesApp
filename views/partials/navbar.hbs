@@ -14,22 +14,32 @@
                 <li><a href="/courses">Courses</a></li>
             {{/if}}
 
-            {{#if isAdd}}
-                <li class="active"><a href="/add">Add Course</a></li>
-            {{else}}
-                <li><a href="/add">Add Course</a></li>
-            {{/if}}
+            {{#if isAuth}}
+                {{#if isAdd}}
+                    <li class="active"><a href="/add">Add Course</a></li>
+                {{else}}
+                    <li><a href="/add">Add Course</a></li>
+                {{/if}}
 
-            {{#if isCard}}
-                <li class="active"><a href="/card">Card</a></li>
-            {{else}}
-                <li><a href="/card">Card</a></li>
-            {{/if}}
+                {{#if isCard}}
+                    <li class="active"><a href="/card">Card</a></li>
+                {{else}}
+                    <li><a href="/card">Card</a></li>
+                {{/if}}
 
-            {{#if isOrder}}
-                <li class="active"><a href="/orders">Orders</a></li>
+                {{#if isOrder}}
+                    <li class="active"><a href="/orders">Orders</a></li>
+                {{else}}
+                    <li><a href="/orders">Orders</a></li>
+                {{/if}}
+
+                <li><a href="/auth/logout">Log Out</a></li>
             {{else}}
-                <li><a href="/orders">Orders</a></li>
+                {{#if isLogin}}
+                    <li class="active"><a href="auth/login#login">Log In</a></li>
+                {{else}}
+                    <li><a href="auth/login#login">Log In</a></li>
+                {{/if}}
             {{/if}}
         </ul>
     </div>

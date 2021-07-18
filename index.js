@@ -1,5 +1,6 @@
 const express = require('express');
 var exphbs  = require('express-handlebars');
+const session = require('express-session');
 const Handlebars = require('handlebars');
 const path = require('path');
 const mongoose  = require('mongoose');
@@ -11,9 +12,11 @@ const coursesRoutes = require('./routes/courses');
 const addRoutes = require('./routes/add');
 const cardRoutes = require('./routes/card');
 const ordersRoutes = require('./routes/orders');
+const authRoutes = require('./routes/auth');
 //
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const User = require('./models/user');
+const varMiddleware = require('./middleware/variables');
 
 const hbs = exphbs.create({
     defaultLayout: 'main',
@@ -38,12 +41,19 @@ mongoose.set('useFindAndModify', false);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({extended: true}));
+app.use(session({
+    secret: 'some secret value',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(varMiddleware);
 
 app.use('/', homeRoutes);
 app.use('/courses', coursesRoutes);
 app.use('/add', addRoutes);
 app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
+app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
