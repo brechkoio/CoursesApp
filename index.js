@@ -4,10 +4,14 @@ const Handlebars = require('handlebars');
 const path = require('path');
 const mongoose  = require('mongoose');
 const app = express();
+
+//ROUTES
 const homeRoutes = require('./routes/home');
 const coursesRoutes = require('./routes/courses');
 const addRoutes = require('./routes/add');
 const cardRoutes = require('./routes/card');
+const ordersRoutes = require('./routes/orders');
+//
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const User = require('./models/user');
 
@@ -39,6 +43,7 @@ app.use('/', homeRoutes);
 app.use('/courses', coursesRoutes);
 app.use('/add', addRoutes);
 app.use('/card', cardRoutes);
+app.use('/orders', ordersRoutes);
 
 const PORT = process.env.PORT || 3000;
 
