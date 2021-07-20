@@ -5,6 +5,8 @@ const Handlebars = require('handlebars');
 const path = require('path');
 const mongoose  = require('mongoose');
 const app = express();
+const MongoStore = require('connect-mongodb-session')(session);
+const MONGODB_URI = 'mongodb+srv://SuperDB:C0i3ATKYUWI5CRe5@cluster0.cj5tv.mongodb.net/CoursesApp?retryWrites=true&w=majority';
 
 //ROUTES
 const homeRoutes = require('./routes/home');
@@ -17,6 +19,13 @@ const authRoutes = require('./routes/auth');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const User = require('./models/user');
 const varMiddleware = require('./middleware/variables');
+const userMiddleware = require('./middleware/user');
+//
+
+const store = new MongoStore({
+    collection: 'sessions',
+    uri: MONGODB_URI
+});
 
 const hbs = exphbs.create({
     defaultLayout: 'main',
@@ -28,15 +37,6 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
 
-app.use(async (req, res, next) => {
-    try {
-        const user = await User.findById('60e72f6167ad462124f7e81c');
-        req.user = user;
-        next();
-    } catch (error) {
-        console.log('User error', error);
-    }
-});
 mongoose.set('useFindAndModify', false);
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,9 +44,11 @@ app.use(express.urlencoded({extended: true}));
 app.use(session({
     secret: 'some secret value',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store
 }));
 app.use(varMiddleware);
+app.use(userMiddleware);
 
 app.use('/', homeRoutes);
 app.use('/courses', coursesRoutes);
@@ -57,21 +59,10 @@ app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-
-
 async function start() {
     try {
-        const url = 'mongodb+srv://SuperDB:C0i3ATKYUWI5CRe5@cluster0.cj5tv.mongodb.net/CoursesApp?retryWrites=true&w=majority';
-        await mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true}); 
-        const candidate = await User.findOne();
-        if (!candidate) {
-            const user = new User({
-                email: 'yuriibrechko@gmail.com',
-                name: 'Yurii',
-                cart: {items: []}
-            });
-            await user.save();
-        }
+        await mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true}); 
+
         app.listen(PORT, () => {
             console.log(`Server started on port ${PORT}`);
         });  

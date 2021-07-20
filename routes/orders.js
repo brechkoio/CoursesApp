@@ -2,6 +2,7 @@ const { Router } = require('express');
 const order = require('../models/order');
 const Order = require('../models/order');
 const router = Router();
+const auth = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
     try {
@@ -25,7 +26,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         const user = await req.user
             .populate('cart.items.courseId')
