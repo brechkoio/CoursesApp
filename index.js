@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose  = require('mongoose');
 const app = express();
 const MongoStore = require('connect-mongodb-session')(session);
+const csrf = require('csurf')
 const MONGODB_URI = 'mongodb+srv://SuperDB:C0i3ATKYUWI5CRe5@cluster0.cj5tv.mongodb.net/CoursesApp?retryWrites=true&w=majority';
 
 //ROUTES
@@ -47,8 +48,10 @@ app.use(session({
     saveUninitialized: false,
     store
 }));
+app.use(csrf());
 app.use(varMiddleware);
 app.use(userMiddleware);
+
 
 app.use('/', homeRoutes);
 app.use('/courses', coursesRoutes);
