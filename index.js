@@ -1,5 +1,6 @@
 const express = require('express');
 var exphbs  = require('express-handlebars');
+const flash = require('connect-flash');
 const session = require('express-session');
 const Handlebars = require('handlebars');
 const path = require('path');
@@ -18,7 +19,6 @@ const ordersRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
 //
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
-const User = require('./models/user');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
 //
@@ -48,6 +48,7 @@ app.use(session({
     saveUninitialized: false,
     store
 }));
+app.use(flash());
 app.use(csrf());
 app.use(varMiddleware);
 app.use(userMiddleware);
