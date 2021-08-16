@@ -13,6 +13,7 @@ const csrf = require('csurf')
 //ROUTES
 const homeRoutes = require('./routes/home');
 const coursesRoutes = require('./routes/courses');
+const aboutRoutes = require('./routes/about');
 const addRoutes = require('./routes/add');
 const cardRoutes = require('./routes/card');
 const ordersRoutes = require('./routes/orders');
@@ -31,6 +32,7 @@ const store = new MongoStore({
 const hbs = exphbs.create({
     defaultLayout: 'main',
     extname: 'hbs',
+    helpers: require('./utils/hbs-helpers'),
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 });
 
@@ -61,6 +63,7 @@ app.use('/add', addRoutes);
 app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
+app.use('/about', aboutRoutes);
 
 const PORT = process.env.PORT || 3000;
 

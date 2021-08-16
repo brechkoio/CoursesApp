@@ -24,7 +24,9 @@ document.querySelectorAll('.date').forEach(node => {
   node.textContent = toDate(node.textContent);
 });
 
-const $card = document.querySelector('#card')
+const $card = document.querySelector('#card');
+var elems = document.querySelectorAll('.parallax');
+
 if ($card) {
   $card.addEventListener('click', event => {
     if (event.target.classList.contains('js-remove')) {
@@ -62,3 +64,4 @@ if ($card) {
 }
 
 var instance = M.Tabs.init(document.querySelectorAll('.tabs'));
+var instances = M.Parallax.init(elems);

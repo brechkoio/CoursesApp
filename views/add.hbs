@@ -1,23 +1,35 @@
-<form action="/add" method="POST">
-    <div class="input-field">
-        <input id="title" name="title" type="text" class="validate" required>
-        <label for="title">Course name</label>
-        <span class="helper-text" data-error="Enter title"></span>
+<div class="container">
+    <div class="row">
+        <h1 class="head_title">Add course</h1>
+
+        {{#if error}}
+            <p class="alert">{{error}}</p>
+        {{/if}}
+
+        <div class="col s6 offset-s3">
+            <form action="/add" method="POST" novalidate>
+                <div class="input-field">
+                    <input id="title" name="title" type="text" class="validate" value="{{data.title}}" required>
+                    <label for="title">Course name</label>
+                    <span class="helper-text" data-error="Enter title"></span>
+                </div>
+
+                <div class="input-field">
+                    <input id="price" name="price" type="number" class="validate" min="10" value="{{data.price}}" required>
+                    <label for="price">Course price</label>
+                    <span class="helper-text" data-error="Enter price"></span>
+                </div>
+
+                <div class="input-field">
+                    <input id="img" name="img" type="text" class="validate" value="{{data.img}}" required>
+                    <label for="img">URL image</label>
+                    <span class="helper-text" data-error="Enter URL"></span>
+                </div>
+
+                <input type="hidden" name="_csrf" value="{{csrf}}">
+
+                <button class="btn btn-primary">Add Course</button>
+            </form>
+        </div>
     </div>
-
-    <div class="input-field">
-        <input id="price" name="price" type="number" class="validate" min="10" required>
-        <label for="price">Course price</label>
-        <span class="helper-text" data-error="Enter price"></span>
-    </div>
-
-    <div class="input-field">
-        <input id="img" name="img" type="text" class="validate" required>
-        <label for="url">URL image</label>
-        <span class="helper-text" data-error="Enter URL"></span>
-    </div>
-
-    <input type="hidden" name="_csrf" value="{{csrf}}">
-
-    <button class="btn btn-primary">Add Course</button>
-</form>
+</div>

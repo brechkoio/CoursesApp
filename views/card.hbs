@@ -1,41 +1,46 @@
-<h1>Card</h1>
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <h1 class="head_title">Card</h1>
+            <div id="card">
+                {{#if courses.length}}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Amount</th>
+                            <th>Active</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-<div id="card">
-    {{#if courses.length}}
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Amount</th>
-                <th>Active</th>
-            </tr>
-        </thead>
-        <tbody>
+                        {{#each courses}}
+                        <tr>
+                            <td>{{title}}</td>
+                            <td>{{count}}</td>
+                            <td>
+                                <button 
+                                    class="btn btm-small js-remove" 
+                                    data-id="{{id}}" 
+                                    data-csrf="{{@root.csrf}}"
+                                >Delete</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
 
-            {{#each courses}}
-            <tr>
-                <td>{{title}}</td>
-                <td>{{count}}</td>
-                <td>
-                    <button 
-                        class="btn btm-small js-remove" 
-                        data-id="{{id}}" 
-                        data-csrf="{{@root.csrf}}"
-                    >Delete</button>
-                </td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
-
-    <p><strong>Price:</strong> <span class="price">{{price}}</span></p>
-    <form action="/orders" method="POST">
-        <input type="hidden" name="_csrf" value="{{csrf}}">
-        <button type="submit" class="btn">
-            To Order
-        </button>
-    </form>
-    {{else}}
-    <p>Card list empty</p>
-    {{/if}}
+                <p><strong>Price:</strong> <span class="price">{{price}}</span></p>
+                <form action="/orders" method="POST">
+                    <input type="hidden" name="_csrf" value="{{csrf}}">
+                    <button type="submit" class="btn">
+                        To Order
+                    </button>
+                </form>
+                {{else}}
+                <p>Card list empty</p>
+                {{/if}}
+            </div>
+        </div>
+    </div>
 </div>
