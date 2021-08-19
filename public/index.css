@@ -76,3 +76,8 @@ main {
 .head_title {
   text-align: center;
 }
+
+.avatar {
+  max-width: 300px;
+  height: auto;
+}

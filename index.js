@@ -6,6 +6,8 @@ const session = require('express-session');
 const Handlebars = require('handlebars');
 const path = require('path');
 const mongoose  = require('mongoose');
+const helmet = require('helmet');
+const compresion = require('compression');
 const app = express();
 const MongoStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf')
@@ -18,10 +20,13 @@ const addRoutes = require('./routes/add');
 const cardRoutes = require('./routes/card');
 const ordersRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
+const profileRoutes = require('./routes/profile');
 //
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
+const errorHandler = require('./middleware/error');
+const fileMiddleware = require('./middleware/file');
 //
 
 const store = new MongoStore({
@@ -43,6 +48,7 @@ app.set('views', 'views');
 mongoose.set('useFindAndModify', false);
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(express.urlencoded({extended: true}));
 
 app.use(session({
@@ -52,11 +58,14 @@ app.use(session({
     store
 }));
 app.use(flash());
+app.use(fileMiddleware.single('avatar'));
 app.use(csrf());
+app.use(helmet());
+app.use(compresion());
 app.use(varMiddleware);
 app.use(userMiddleware);
 
-
+//ROUTES
 app.use('/', homeRoutes);
 app.use('/courses', coursesRoutes);
 app.use('/add', addRoutes);
@@ -64,6 +73,9 @@ app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
 app.use('/about', aboutRoutes);
+app.use('/profile', profileRoutes);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 

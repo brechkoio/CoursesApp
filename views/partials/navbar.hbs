@@ -27,6 +27,12 @@
                     <li><a href="/add">Add Course</a></li>
                 {{/if}}
 
+                {{#if isProfile}}
+                    <li class="active"><a href="/profile">Profile</a></li>
+                {{else}}
+                    <li><a href="/profile">Profile</a></li>
+                {{/if}}
+
                 {{#if isCard}}
                     <li class="active"><a href="/card">Card</a></li>
                 {{else}}
@@ -42,9 +48,9 @@
                 <li><a href="/auth/logout">Log Out</a></li>
             {{else}}
                 {{#if isLogin}}
-                    <li class="active"><a href="auth/login#login">Log In</a></li>
+                    <li class="active"><a href="/auth/login#login">Log In</a></li>
                 {{else}}
-                    <li><a href="auth/login#login">Log In</a></li>
+                    <li><a href="/uth/login#login">Log In</a></li>
                 {{/if}}
             {{/if}}
         </ul>
