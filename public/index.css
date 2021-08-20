@@ -81,3 +81,16 @@ main {
   max-width: 300px;
   height: auto;
 }
+
+.content-blok {
+  margin: 100px 0 100px;
+  text-align: center;
+}
+
+.content-blok h4 {
+  color: #673ab7;
+}
+
+.content-blok p {
+  font-size: 1.5rem;
+}

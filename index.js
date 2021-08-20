@@ -1,38 +1,34 @@
-const keys = require('./keys');
 const express = require('express');
-var exphbs  = require('express-handlebars');
-const flash = require('connect-flash');
-const session = require('express-session');
-const Handlebars = require('handlebars');
 const path = require('path');
+const csrf = require('csurf');
+const flash = require('connect-flash');
 const mongoose  = require('mongoose');
 const helmet = require('helmet');
 const compresion = require('compression');
-const app = express();
+const exphbs  = require('express-handlebars');
+const Handlebars = require('handlebars');
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+const session = require('express-session');
 const MongoStore = require('connect-mongodb-session')(session);
-const csrf = require('csurf')
-
-//ROUTES
+//routes
 const homeRoutes = require('./routes/home');
-const coursesRoutes = require('./routes/courses');
-const aboutRoutes = require('./routes/about');
-const addRoutes = require('./routes/add');
 const cardRoutes = require('./routes/card');
+const addRoutes = require('./routes/add');
 const ordersRoutes = require('./routes/orders');
+const coursesRoutes = require('./routes/courses');
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
-//
-const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+const aboutRoutes = require('./routes/about');
+//middlewares
 const varMiddleware = require('./middleware/variables');
 const userMiddleware = require('./middleware/user');
 const errorHandler = require('./middleware/error');
 const fileMiddleware = require('./middleware/file');
-//
+const keys = require('./keys');
 
-const store = new MongoStore({
-    collection: 'sessions',
-    uri: keys.MONGODB_URI
-});
+const PORT = process.env.PORT || 3000;
+
+const app = express();
 
 const hbs = exphbs.create({
     defaultLayout: 'main',
@@ -41,11 +37,15 @@ const hbs = exphbs.create({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 });
 
+const store = new MongoStore({
+    collection: 'sessions',
+    uri: keys.MONGODB_URI
+});
+mongoose.set('useFindAndModify', false);
+
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', 'views');
-
-mongoose.set('useFindAndModify', false);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
@@ -57,27 +57,35 @@ app.use(session({
     saveUninitialized: false,
     store
 }));
-app.use(flash());
+
 app.use(fileMiddleware.single('avatar'));
 app.use(csrf());
-app.use(helmet());
+app.use(flash());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            "img-src": ["'self'", "https:"],
+            "script-src-elem": ["'self'", "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js", "'unsafe-inline'" ]
+        }
+    }
+}));
 app.use(compresion());
+
+
 app.use(varMiddleware);
 app.use(userMiddleware);
 
 //ROUTES
 app.use('/', homeRoutes);
-app.use('/courses', coursesRoutes);
 app.use('/add', addRoutes);
+app.use('/courses', coursesRoutes);
 app.use('/card', cardRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
 app.use('/about', aboutRoutes);
 app.use('/profile', profileRoutes);
-
 app.use(errorHandler);
-
-const PORT = process.env.PORT || 3000;
 
 async function start() {
     try {
